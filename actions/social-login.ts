@@ -1,7 +1,7 @@
 'use server';
 
-import { signIn, signOut } from '@/auth/auth';
+import { handler } from '@/app/api/auth/[...nextauth]/route';
 
 export async function githubLogin() {
- await signIn('github');
+ await handler.signIn('github');
 }

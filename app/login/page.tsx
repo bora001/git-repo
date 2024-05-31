@@ -1,6 +1,6 @@
 import LoginButton from '@/components/login/LoginButton';
 
-const page = ({ searchParams }: { searchParams: { code: string } }) => {
+const page = () => {
  return (
   <div className="item-center  flex h-screen w-screen items-center justify-center">
    <LoginButton type="md" />

@@ -1,5 +1,7 @@
 'use server';
-import { signOut } from '@/auth/auth';
+
+import { handler } from '@/app/api/auth/[...nextauth]/route';
+
 export async function githubLogout() {
- await signOut();
+ await handler.signOut();
 }
