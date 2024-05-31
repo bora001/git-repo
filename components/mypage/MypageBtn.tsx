@@ -1,12 +1,7 @@
 'use client';
-import Link from 'next/link';
-import { Button } from '../ui/button';
+import LinkButton from '../ui/LinkButton';
 
 const MypageBtn = () => {
- return (
-  <Link href="/mypage">
-   <Button>MyPage</Button>
-  </Link>
- );
+ return <LinkButton href="mypage" text="Mypage" />;
 };
 export default MypageBtn;
