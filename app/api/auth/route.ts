@@ -1,4 +1,3 @@
-
 import { handler } from './[...nextauth]/route';
 
 export const POST = handler.auth((req) => {

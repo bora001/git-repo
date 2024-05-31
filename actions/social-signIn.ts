@@ -2,6 +2,6 @@
 
 import { handler } from '@/app/api/auth/[...nextauth]/route';
 
-export async function githubLogin() {
+export async function githubSignIn() {
  await handler.signIn('github');
 }

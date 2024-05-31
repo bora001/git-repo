@@ -1,9 +1,9 @@
-import LoginButton from '@/components/login/LoginButton';
+import SignInBtn from '@/components/login/SignInBtn';
 
 const page = () => {
  return (
   <div className="item-center  flex h-screen w-screen items-center justify-center">
-   <LoginButton type="md" />
+   <SignInBtn type="md" />
   </div>
  );
 };
