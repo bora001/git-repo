@@ -3,12 +3,13 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
 import { githubLogin } from '@/actions/social-login';
 
-const LoginButton = () => {
+type LoginButtonType = 'sm' | 'md';
+const LoginButton = ({ type = 'sm' }: { type?: LoginButtonType }) => {
  return (
   <form action={githubLogin}>
    <Button className="space-x-4 bg-black hover:bg-blue-900" type="submit">
     <GitHubLogoIcon />
-    <p>Sign in with Github</p>
+    <p>{`Sign in ${type === 'md' ? 'with Github' : ''}`}</p>
    </Button>
   </form>
  );
