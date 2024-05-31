@@ -1,13 +1,9 @@
-import { Button } from '@/components/ui/button';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import LoginButton from '@/components/login/LoginButton';
 
-const page = () => {
+const page = ({ searchParams }: { searchParams: { code: string } }) => {
  return (
   <div className="item-center  flex h-screen w-screen items-center justify-center">
-   <Button className="space-x-4 bg-black hover:bg-blue-900">
-    <GitHubLogoIcon />
-    <p>Github Login</p>
-   </Button>
+   <LoginButton />
   </div>
  );
 };
