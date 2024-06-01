@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
 
 const login = cookies().get('login')?.value;
 
@@ -19,3 +19,20 @@ export const GET_USER_STARRED_REPOS = `
    }
   }
  `;
+
+export const SELECTED_REPOS = `
+ query getRepoInfo {
+  repository(name:"chakra-ui",owner:"chakra-ui") {
+    name,
+    url,
+    owner{
+      avatarUrl
+    }
+    description,
+    stargazerCount,
+    watchers{
+      totalCount
+    }
+  }
+}
+`;

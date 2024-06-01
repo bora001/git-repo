@@ -5,3 +5,11 @@ export type StarredRepoListType = {
   avatarUrl: string;
  };
 };
+
+export interface SelectedRepoType extends StarredRepoListType {
+ description: string;
+ stargazerCount: number;
+ watchers: {
+  totalCount: number;
+ };
+}
