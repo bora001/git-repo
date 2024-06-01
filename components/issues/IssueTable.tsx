@@ -1,6 +1,6 @@
 'use client';
 
 const IssueTable = () => {
- return <div>IssueTable</div>;
+ return <div className="round-container">IssueTable</div>;
 };
 export default IssueTable;

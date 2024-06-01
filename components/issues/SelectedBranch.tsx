@@ -25,13 +25,13 @@ const SelectedBranch = ({
  ];
 
  return (
-  <div className="flex justify-between rounded-md bg-white p-5">
+  <div className="round-container flex justify-between">
    {/* left */}
    <div>
     <div className="flex items-center space-x-2">
      <Image src={avatarUrl} width={30} height={30} alt="repository image" className="rounded-sm" />
-     <div>{name}</div>
-     <Link href={url} className="">
+     <div className="capitalize">{name}</div>
+     <Link href={url} target="_blank">
       <ExternalLinkIcon className="h-3.5 w-3.5 text-gray-600" />
      </Link>
     </div>
