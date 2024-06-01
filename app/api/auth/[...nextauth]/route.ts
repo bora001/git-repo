@@ -1,3 +1,4 @@
+import { profileEnd } from 'console';
 import NextAuth from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import { cookies } from 'next/headers';
@@ -14,6 +15,7 @@ export const handler = NextAuth({
   signIn: async ({ profile, account }) => {
    cookies().set('access', account?.access_token ?? '');
    cookies().set('refresh', account?.refresh_token ?? '');
+   cookies().set('login', (profile?.login as string) ?? '');
    return true;
   },
   session: async ({ session, token }) => {

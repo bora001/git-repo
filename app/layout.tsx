@@ -16,7 +16,7 @@ export default function RootLayout({
 }: Readonly<{
  children: React.ReactNode;
 }>) {
- const isLogin = cookies().has('authjs.session-token');
+ const isLogin = cookies().has('authjs.csrf-token');
  return (
   <html lang="en">
    <body className={inter.className}>
