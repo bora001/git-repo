@@ -1,7 +1,15 @@
-import StarredLink, { StarredLinkType } from '@/components/issues/StarredLink';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import IssueFilter from '@/components/issues/IssueFilter';
+import IssueTable from '@/components/issues/IssueTable';
+import SelectedBranch from '@/components/issues/SelectedBranch';
+import StarredList from '@/components/issues/StarredList';
 import { cookies } from 'next/headers';
-
+export type StarredRepoListType = {
+ name: string;
+ url: string;
+ owner: {
+  avatarUrl: string;
+ };
+};
 const Issues = async () => {
  const login = cookies().get('login')?.value;
  const access = cookies().get('access')?.value;
@@ -12,14 +20,14 @@ const Issues = async () => {
    user(login: "${login}") {
     login
     starredRepositories(first: 10) {
+     totalCount
      nodes {
       name
       url
       owner {
         avatarUrl
       }
-     }
-     totalCount
+      }
     }
    }
   }
@@ -38,24 +46,13 @@ const Issues = async () => {
  }).then((res) => res.json());
  const { nodes, totalCount } = test.data?.user?.starredRepositories ?? {};
  return (
-  <div className="space-y-3 p-10">
-   <p className="ml-3 text-sm font-medium">
-    Total{' '}
-    <span
-     className="
-    font-bold
-    text-blue-600"
-    >
-     {totalCount}
-    </span>
-   </p>
-   <ScrollArea className="h-[250px]  w-[250px] rounded-md border p-4">
-    <div className="flex-col space-y-3">
-     {nodes?.map((item: StarredLinkType) => <StarredLink key={item.url} {...item} />)}
-     {nodes?.map((item: StarredLinkType) => <StarredLink key={item.url} {...item} />)}
-     {nodes?.map((item: StarredLinkType) => <StarredLink key={item.url} {...item} />)}
-    </div>
-   </ScrollArea>
+  <div className="flex h-screen w-screen">
+   <StarredList {...{ totalCount, nodes }} />
+   <div className="w-full bg-blue-50">
+    <SelectedBranch />
+    <IssueFilter />
+    <IssueTable />
+   </div>
   </div>
  );
 };

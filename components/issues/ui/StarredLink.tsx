@@ -1,13 +1,9 @@
 'use client';
+import { StarredRepoListType } from '@/app/issues/page';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
-export type StarredLinkType = {
- url: string;
- name: string;
- owner: { avatarUrl: string };
-};
-const StarredLink = ({ url, name, owner: { avatarUrl } }: StarredLinkType) => {
+const StarredLink = ({ url, name, owner: { avatarUrl } }: StarredRepoListType) => {
  return (
   <div className="flex items-center justify-between">
    <div className="flex  items-center space-x-3">
@@ -15,9 +11,9 @@ const StarredLink = ({ url, name, owner: { avatarUrl } }: StarredLinkType) => {
     <p className="text-sm font-medium capitalize text-gray-700">{name}</p>
    </div>
 
-   <Link href={url} target="_blank">
+   {/* <Link href={url} target="_blank">
     <ExternalLinkIcon className="gray h-3.5 w-3.5" />
-   </Link>
+   </Link> */}
   </div>
  );
 };
