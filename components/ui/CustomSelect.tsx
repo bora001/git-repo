@@ -15,13 +15,15 @@ const CustomSelect = ({
  placeholder,
  title,
  selectObj,
+ onChange,
 }: {
  placeholder: string;
  title?: string;
  selectObj: SelectItemType[];
+ onChange: (option: string) => void;
 }) => {
  return (
-  <Select>
+  <Select onValueChange={onChange}>
    <SelectTrigger className="w-[180px]">
     <SelectValue placeholder={placeholder} />
    </SelectTrigger>

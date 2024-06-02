@@ -29,7 +29,9 @@ const SelectedBranch = ({
    {/* left */}
    <div>
     <div className="flex items-center space-x-2">
-     <Image src={avatarUrl} width={30} height={30} alt="repository image" className="rounded-sm" />
+     {avatarUrl && (
+      <Image src={avatarUrl} width={30} height={30} alt="repository image" className="rounded-sm" />
+     )}
      <div className="capitalize">{name}</div>
      <Link href={url} target="_blank">
       <ExternalLinkIcon className="h-3.5 w-3.5 text-gray-600" />

@@ -1,7 +1,12 @@
 'use client';
 import StarredLink from './ui/StarredLink';
-import { StarredRepoListType } from '@/app/issues/page';
-
+import { StarredRepoListType } from '@/query/issues/issue-query.type';
+import { useSearchParams } from 'next/navigation';
+import useSetURL from '@/hooks/useSetURL';
+export type IssueSelectedType = {
+ name: string;
+ login: string;
+};
 const StarredList = ({
  totalCount,
  nodes,
@@ -9,6 +14,13 @@ const StarredList = ({
  totalCount: number;
  nodes: StarredRepoListType[];
 }) => {
+ const searchParams = useSearchParams();
+ const current = searchParams.get('name');
+
+ const { setURL } = useSetURL();
+ const setSelected = ({ login, name }: IssueSelectedType) => {
+  setURL({ login, name });
+ };
  return (
   <div className="space-y-3 p-10">
    <p className="ml-3 text-sm font-medium">
@@ -21,9 +33,15 @@ const StarredList = ({
      {totalCount}
     </span>
    </p>
-   <div className="h-[250px] w-[250px] flex-col space-y-3 overflow-y-scroll rounded-md border p-4">
-    {[...nodes, ...nodes].map((item) => (
-     <StarredLink key={item.url} {...item} />
+
+   <div className="max-h-[250px] w-[250px] flex-col space-y-1 overflow-y-scroll rounded-md border p-3">
+    {nodes.map((item) => (
+     <StarredLink
+      key={`${item.name}_${item.owner.avatarUrl}`}
+      {...item}
+      onClick={setSelected}
+      isSelected={current === item.name}
+     />
     ))}
    </div>
   </div>

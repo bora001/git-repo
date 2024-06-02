@@ -12,6 +12,7 @@ export const GET_USER_STARRED_REPOS = `
       name
       url
       owner {
+        login
         avatarUrl
       }
       }
@@ -20,12 +21,13 @@ export const GET_USER_STARRED_REPOS = `
   }
  `;
 
-export const SELECTED_REPOS = `
+export const SELECTED_REPOS = ({ name, owner }: { name: string; owner: string }) => `
  query getRepoInfo {
-  repository(name:"chakra-ui",owner:"chakra-ui") {
+  repository(name:"${name}",owner:"${owner}") {
     name,
     url,
     owner{
+      login
       avatarUrl
     }
     description,

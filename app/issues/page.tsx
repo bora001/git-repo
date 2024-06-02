@@ -5,7 +5,7 @@ import StarredList from '@/components/issues/StarredList';
 import { GET_USER_STARRED_REPOS, SELECTED_REPOS } from '@/query/issues/issues-query';
 import { cookies } from 'next/headers';
 
-const Issues = async () => {
+const Issues = async ({ searchParams }: { searchParams: { [key: string]: string } }) => {
  const access = cookies().get('access')?.value;
  const starredRepoData = await fetch(process.env.GRAPHQL_GITHUB_API_URL as string, {
   method: 'POST',
@@ -26,7 +26,7 @@ const Issues = async () => {
    Authorization: `Bearer ${access}`,
   },
   body: JSON.stringify({
-   query: SELECTED_REPOS,
+   query: SELECTED_REPOS({ name: searchParams.name, owner: searchParams.login }),
   }),
   next: { tags: ['selected'] },
  }).then((res) => res.json());
