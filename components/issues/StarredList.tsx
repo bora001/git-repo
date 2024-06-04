@@ -35,7 +35,7 @@ const StarredList = ({
    </p>
 
    <div className="max-h-[250px] w-[250px] flex-col space-y-1 overflow-y-scroll rounded-md border p-3">
-    {nodes.map((item) => (
+    {nodes?.map((item) => (
      <StarredLink
       key={`${item.name}_${item.owner.avatarUrl}`}
       {...item}
