@@ -35,10 +35,22 @@ export const SELECTED_REPOS = ({ name, owner }: { name: string; owner: string })
 }
 `;
 
-export const SELECTED_REPO_ISSUE_LIST = ({ name, owner }: { name: string; owner: string }) => `
+export const SELECTED_REPO_ISSUE_LIST = ({
+ name,
+ owner,
+ last,
+ states,
+ sort,
+}: {
+ name: string;
+ owner: string;
+ last: number;
+ states: string;
+ sort: string;
+}) => `
 query getRepoInfo {
     repository(name:"${name}",owner:"${owner}") {
-    issues(last:10, states:OPEN){
+    issues(last:${last}${states !== 'ALL' && states.length ? `,states:${states}` : ``}${sort.length > 0 ? `, orderBy:{field:${sort},direction:ASC}` : ''} ){
       nodes{
  				title,
         createdAt,

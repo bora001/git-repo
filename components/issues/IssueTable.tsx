@@ -17,20 +17,23 @@ import { SymbolIcon } from '@radix-ui/react-icons';
 type IssueTableDataType = SelectedRepoIssueListType['repository']['issues']['nodes'];
 const IssueTable = ({ access }: { access: string }) => {
  const params = useSearchParams();
- const [name, owner] = [params.get('name') ?? '', params.get('login') ?? ''];
+ const [name, owner, states, sort] = [
+  params.get('name') ?? '',
+  params.get('login') ?? '',
+  params.get('status')?.toUpperCase() ?? '',
+  params.get('sort') ?? '',
+ ];
  const isValidData = !!name.length && !!owner.length;
  const { data, isLoading, isFetching } = useQuery({
-  queryKey: ['issue-table', name, owner],
+  queryKey: ['issue-table', name, owner, states, sort],
   enabled: !!access && isValidData,
   queryFn: () =>
    request(
     process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL as string,
     gql`
-     ${SELECTED_REPO_ISSUE_LIST({ name, owner })}
+     ${SELECTED_REPO_ISSUE_LIST({ name, owner, last: 10, states, sort })}
     `,
-    {
-     last: 10,
-    },
+    {},
     {
      Authorization: `Bearer ${access}`,
     },
