@@ -9,7 +9,7 @@ export const getSelectedRepoInfo = ({
  name: string;
  owner: string;
 }) =>
- fetch(process.env.GRAPHQL_GITHUB_API_URL as string, {
+ fetch(process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL as string, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',

@@ -30,10 +30,10 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
  return (
   <div className="flex h-screen w-screen">
    <StarredList {...{ totalCount, nodes }} />
-   <div className="w-full space-y-3 bg-blue-50 p-10">
+   <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10">
     {!notSelected && <SelectedBranch {...repository} />}
     <IssueFilter />
-    <IssueTable {...{ name, login, access }} />
+    <IssueTable {...{ access }} />
    </div>
   </div>
  );
