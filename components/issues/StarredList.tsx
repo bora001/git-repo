@@ -13,7 +13,10 @@ const StarredList = ({
 }: {
  totalCount: number;
  nodes: StarredRepoListType[];
-}) => {
+    }) => {
+    
+    
+    
  const searchParams = useSearchParams();
  const current = searchParams.get('name');
 

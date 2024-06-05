@@ -1,54 +1,39 @@
 import { checkReturn } from '@/actions/auth-check';
+import { getSelectedRepoInfo } from '@/actions/issues/get-selected-repo-info';
+import { getStarredRepoData } from '@/actions/issues/get-starred-repo';
 import IssueFilter from '@/components/issues/IssueFilter';
 import IssueTable from '@/components/issues/IssueTable';
 import SelectedBranch from '@/components/issues/SelectedBranch';
 import StarredList from '@/components/issues/StarredList';
-import { GET_USER_STARRED_REPOS, SELECTED_REPOS } from '@/query/issues/issues-query';
 import { cookies } from 'next/headers';
 
 const Issues = async ({ searchParams }: { searchParams: { [key: string]: string } }) => {
  await checkReturn();
-
  const { name, login } = searchParams ?? {};
  const notSelected = !name || !login;
- const access = cookies().get('access')?.value;
- const starredRepoData = await fetch(process.env.GRAPHQL_GITHUB_API_URL as string, {
-  method: 'POST',
-  headers: {
-   'Content-Type': 'application/json',
-   Authorization: `Bearer ${access}`,
-  },
-  body: JSON.stringify({
-   query: GET_USER_STARRED_REPOS,
-  }),
-  next: { tags: ['starred'] },
- }).then((res) => res.json());
 
- const selected = !notSelected
-  ? await fetch(process.env.GRAPHQL_GITHUB_API_URL as string, {
-     method: 'POST',
-     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${access}`,
-     },
-     body: JSON.stringify({
-      query: SELECTED_REPOS({ name: searchParams.name, owner: searchParams.login }),
-     }),
-     next: { tags: ['selected'] },
-    }).then((res) => res.json())
+ const access = cookies().get('access')?.value as string;
+ const auth = cookies().get('login')?.value as string;
+ const starredRepoData = await getStarredRepoData({ access, login: auth });
+ const selectedRepoData = !notSelected
+  ? await getSelectedRepoInfo({
+     access,
+     name: searchParams.name,
+     owner: searchParams.login,
+    })
   : { data: {} };
-
  const { nodes, totalCount } = starredRepoData.data?.user?.starredRepositories ?? {};
  const {
   data: { repository },
- } = selected;
+ } = selectedRepoData;
+
  return (
   <div className="flex h-screen w-screen">
    <StarredList {...{ totalCount, nodes }} />
    <div className="w-full space-y-3 bg-blue-50 p-10">
     {!notSelected && <SelectedBranch {...repository} />}
     <IssueFilter />
-    <IssueTable />
+    <IssueTable {...{ name, login, access }} />
    </div>
   </div>
  );

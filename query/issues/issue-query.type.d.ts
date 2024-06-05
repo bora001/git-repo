@@ -14,3 +14,21 @@ export interface SelectedRepoType extends StarredRepoListType {
   totalCount: number;
  };
 }
+export type SelectedRepoIssueListType = {
+ repository: {
+  issues: {
+   nodes: {
+    title: string;
+    createdAt: string;
+    number: number;
+    editor: {
+     login: string;
+     avatarUrl: string;
+    };
+    comments: {
+     totalCount: number;
+    };
+   };
+  };
+ };
+};

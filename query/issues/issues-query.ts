@@ -1,8 +1,4 @@
-import { cookies } from 'next/headers';
-
-const login = cookies().get('login')?.value;
-
-export const GET_USER_STARRED_REPOS = `
+export const GET_USER_STARRED_REPOS = ({ login }: { login: string }) => `
   query getUserStarredRepos {
    user(login: "${login}") {
     login
@@ -34,6 +30,27 @@ export const SELECTED_REPOS = ({ name, owner }: { name: string; owner: string })
     stargazerCount,
     watchers{
       totalCount
+    }
+  }
+}
+`;
+
+export const SELECTED_REPO_ISSUE_LIST = ({ name, owner }: { name: string; owner: string }) => `
+query getRepoInfo {
+    repository(name:"${name}",owner:"${owner}") {
+    issues(last:10, states:OPEN){
+      nodes{
+ 				title,
+        createdAt,
+        number,
+        editor{
+          login,
+          avatarUrl
+        }
+        comments{
+          totalCount
+        }
+      }
     }
   }
 }
