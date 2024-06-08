@@ -20,6 +20,7 @@ import { SymbolIcon } from '@radix-ui/react-icons';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { formatNumber } from '@/utils/formatNumber';
 
 const PAGE_SIZE = 10; // page per pagination
 const REQUEST_PAGES = 50; // request pages to server
@@ -82,7 +83,15 @@ const IssueTable = ({ access }: { access: string }) => {
    size: 270,
   }),
   columnHelper.accessor('title', {
-   cell: (info) => <p className="text-left">{`${info.getValue()}`}</p>,
+   cell: (info) => (
+    <Link
+     className="underline"
+     target="_blank"
+     href={`https://github.com/${owner}/${name}/issues/${info.row.original.number}`}
+    >
+     <p className="text-left">{`${info.getValue()}`}</p>
+    </Link>
+   ),
    header: () => <span>Title</span>,
   }),
   columnHelper.accessor('createdAt', {
@@ -93,7 +102,7 @@ const IssueTable = ({ access }: { access: string }) => {
   }),
   columnHelper.accessor('comments.totalCount', {
    header: () => 'Comment',
-   cell: (info) => info.renderValue(),
+   cell: (info) => formatNumber(info.renderValue() ?? 0),
   }),
  ];
 
@@ -158,20 +167,12 @@ const IssueTable = ({ access }: { access: string }) => {
        {table.getRowModel().rows.map((row) => (
         <tr key={row.id} className="flex w-full items-center">
          {row.getVisibleCells().map((cell) => {
-          const content = flexRender(cell.column.columnDef.cell, cell.getContext());
-          const href = `https://github.com/${owner}/${name}/issues/${row.original.number}`;
           return (
            <td
             key={cell.id}
             className={`${getCellWidth(cell.id)}  px-5 py-2 text-center text-sm text-gray-800 `}
            >
-            {cell.id.includes('title') ? (
-             <Link href={href} className="underline" target="_blank">
-              {content}
-             </Link>
-            ) : (
-             content
-            )}
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
            </td>
           );
          })}
