@@ -14,6 +14,19 @@ export interface SelectedRepoType extends StarredRepoListType {
   totalCount: number;
  };
 }
+
+export type SelectedRepoIssueListNodesType = {
+ title: string;
+ createdAt: string;
+ number: number;
+ editor: {
+  login: string;
+  avatarUrl: string;
+ };
+ comments: {
+  totalCount: number;
+ };
+};
 export type SelectedRepoIssueListType = {
  repository: {
   issues: {
@@ -23,18 +36,7 @@ export type SelectedRepoIssueListType = {
     startCursor: string;
     endCursor: string;
    };
-   nodes: {
-    title: string;
-    createdAt: string;
-    number: number;
-    editor: {
-     login: string;
-     avatarUrl: string;
-    };
-    comments: {
-     totalCount: number;
-    };
-   };
+   nodes: SelectedRepoIssueListNodesType[];
   };
  };
 };

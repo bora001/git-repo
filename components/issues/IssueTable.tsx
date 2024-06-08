@@ -1,5 +1,8 @@
 'use client';
-import { SelectedRepoIssueListType } from '@/query/issues/issue-query.type';
+import {
+ SelectedRepoIssueListNodesType,
+ SelectedRepoIssueListType,
+} from '@/query/issues/issue-query.type';
 import { SELECTED_REPO_ISSUE_LIST } from '@/query/issues/issues-query';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
@@ -16,14 +19,17 @@ import { useSearchParams } from 'next/navigation';
 import { SymbolIcon } from '@radix-ui/react-icons';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 
-type IssueTableDataType = SelectedRepoIssueListType['repository']['issues']['nodes'];
 const PAGE_SIZE = 10; // page per pagination
 const REQUEST_PAGES = 50; // request pages to server
-
+type CursorType = {
+ before: null | string;
+ after: null | string;
+};
 const IssueTable = ({ access }: { access: string }) => {
  const [pageCount, setPageCount] = useState(0);
- const [cursor, setCursor] = useState({
+ const [cursor, setCursor] = useState<CursorType>({
   before: null, //before cursor
   after: null, //after cursor
  });
@@ -55,7 +61,7 @@ const IssueTable = ({ access }: { access: string }) => {
   queryKey: ['issue-table', name, owner, states, sort, cursor.before, cursor.after],
   enabled: !!access && isValidData,
   queryFn: () =>
-   request(
+   request<SelectedRepoIssueListType>(
     process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL as string,
     gql`
      ${SELECTED_REPO_ISSUE_LIST(requestParams)}
@@ -66,9 +72,10 @@ const IssueTable = ({ access }: { access: string }) => {
     },
    ),
  });
- const tableData: any = useMemo(() => data?.repository.issues.nodes ?? [], [data]);
- const columnHelper = createColumnHelper<IssueTableDataType[]>();
- const columns: any = [
+
+ const tableData = useMemo(() => data?.repository.issues.nodes ?? [], [data]);
+ const columnHelper = createColumnHelper<SelectedRepoIssueListNodesType>();
+ const columns = [
   columnHelper.accessor('number', {
    cell: (info) => info.getValue(),
    header: () => <span>No.</span>,
@@ -104,12 +111,12 @@ const IssueTable = ({ access }: { access: string }) => {
  const { hasNextPage, hasPreviousPage, startCursor, endCursor } =
   data?.repository.issues.pageInfo ?? {};
  const handleNextPage = () => {
-  setCursor((prev) => ({ before: null, after: endCursor }));
+  setCursor((prev) => ({ before: null, after: endCursor ?? null }));
   setPageCount((prev) => prev + 1);
  };
 
  const handlePrevPage = () => {
-  setCursor((prev) => ({ before: startCursor, after: null }));
+  setCursor((prev) => ({ before: startCursor ?? null, after: null }));
   setPageCount((prev) => prev - 1);
  };
 
@@ -137,7 +144,7 @@ const IssueTable = ({ access }: { access: string }) => {
          {headerGroup.headers.map((header) => (
           <th
            key={header.id}
-           className={`${getCellWidth(header.id)}  bg-blue-100 px-5 py-2 text-sm`}
+           className={`${getCellWidth(header.id)}  bg-blue-100 px-5 py-2 text-sm `}
           >
            {header.isPlaceholder
             ? null
@@ -150,14 +157,24 @@ const IssueTable = ({ access }: { access: string }) => {
       <tbody>
        {table.getRowModel().rows.map((row) => (
         <tr key={row.id} className="flex w-full items-center">
-         {row.getVisibleCells().map((cell) => (
-          <td
-           key={cell.id}
-           className={`${getCellWidth(cell.id)}  px-5 py-2 text-center text-sm text-gray-800`}
-          >
-           {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </td>
-         ))}
+         {row.getVisibleCells().map((cell) => {
+          const content = flexRender(cell.column.columnDef.cell, cell.getContext());
+          const href = `https://github.com/${owner}/${name}/issues/${row.original.number}`;
+          return (
+           <td
+            key={cell.id}
+            className={`${getCellWidth(cell.id)}  px-5 py-2 text-center text-sm text-gray-800 `}
+           >
+            {cell.id.includes('title') ? (
+             <Link href={href} className="underline" target="_blank">
+              {content}
+             </Link>
+            ) : (
+             content
+            )}
+           </td>
+          );
+         })}
         </tr>
        ))}
       </tbody>
