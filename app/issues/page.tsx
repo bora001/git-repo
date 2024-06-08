@@ -4,6 +4,7 @@ import { getSelectedRepoInfo } from '@/actions/issues/get-selected-repo-info';
 import { getStarredRepoData } from '@/actions/issues/get-starred-repo';
 import IssueFilter from '@/components/issues/IssueFilter';
 import IssueTable from '@/components/issues/IssueTable';
+import NotSelected from '@/components/issues/NotSelected';
 import SelectedBranch from '@/components/issues/SelectedBranch';
 import StarredList from '@/components/issues/StarredList';
 import { cookies } from 'next/headers';
@@ -39,10 +40,14 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
   <div className="flex h-screen w-screen">
    <StarredList {...{ totalCount, nodes }} />
    <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10">
-    {!notSelected && <SelectedBranch {...repository} />}
-    {notSelected && <>Please select branch on the left</>}
-    {!notSelected && <IssueFilter />}
-    {!notSelected && <IssueTable {...{ access }} />}
+    {notSelected && <NotSelected />}
+    {!notSelected && (
+     <>
+      <SelectedBranch {...repository} />
+      <IssueFilter />
+      <IssueTable {...{ access }} />
+     </>
+    )}
    </div>
   </div>
  );

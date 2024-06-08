@@ -62,7 +62,18 @@ const config = {
     md: 'calc(var(--radius) - 2px)',
     sm: 'calc(var(--radius) - 4px)',
    },
+
    keyframes: {
+    'bounce-slide': {
+     '0%, 100%': {
+      transform: 'translateX(-40%)',
+      animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)',
+     },
+     '50%': {
+      transform: 'translateX(0%)',
+      animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+     },
+    },
     'accordion-down': {
      from: { height: '0' },
      to: { height: 'var(--radix-accordion-content-height)' },
@@ -73,6 +84,7 @@ const config = {
     },
    },
    animation: {
+    'bounce-slide': 'bounce-slide 1s linear infinite',
     'accordion-down': 'accordion-down 0.2s ease-out',
     'accordion-up': 'accordion-up 0.2s ease-out',
    },

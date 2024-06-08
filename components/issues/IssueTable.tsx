@@ -180,11 +180,11 @@ const IssueTable = ({ access }: { access: string }) => {
        ))}
       </tbody>
      </table>
-     <div className="m-auto mt-3 flex w-fit basis-[10%] items-center space-x-2">
+     <div className="m-auto mb-4 mt-3 flex w-fit basis-[10%] items-center">
       <Button variant="unstyled" onClick={handlePrevPage} disabled={!hasPreviousPage}>
        <ChevronLeft />
       </Button>
-      <div>
+      <div className="space-x-1">
        {[...Array(Math.ceil(tableData.length / PAGE_SIZE))].map((_, index) => {
         const MAX_PAGINATION = REQUEST_PAGES / PAGE_SIZE;
         const pageNumber = index + 1;
@@ -193,6 +193,7 @@ const IssueTable = ({ access }: { access: string }) => {
          <Button
           variant={isActivePagination ? 'default' : 'unstyled'}
           key={index}
+          className="h-7 w-7 rounded-full p-0"
           onClick={() => gotoPage(index)}
          >
           {MAX_PAGINATION * pageCount + pageNumber}
