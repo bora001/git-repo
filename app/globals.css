@@ -78,3 +78,24 @@
 .round-container {
  @apply rounded-md bg-white p-5;
 }
+
+/* styles/globals.css */
+
+/* 웹킷 기반 브라우저(크롬, 사파리 등)에서 스크롤바 커스터마이징 */
+::-webkit-scrollbar {
+ width: 10px; /* 스크롤바의 너비 */
+ height: 12px; /* 가로 스크롤바의 높이 */
+}
+
+::-webkit-scrollbar-track {
+ border-radius: 10px; /*스크롤바 모서리의 둥글기 */
+}
+
+::-webkit-scrollbar-thumb {
+ background-color: #69b0f3; /* 스크롤바의 색상 */
+ border-radius: 10px; /* 스크롤바 모서리의 둥글기
+}
+
+::-webkit-scrollbar-thumb:hover {
+ background: red; /* 마우스를 올렸을 때 스크롤바의 색상 */
+}

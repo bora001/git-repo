@@ -130,7 +130,7 @@ const IssueTable = ({ access }: { access: string }) => {
     <SymbolIcon className="h-6 w-6 animate-spin text-blue-500" />
    ) : (
     <div className="flex h-full w-full flex-1 flex-col  ">
-     <table className="relative top-0 flex basis-[90%] flex-col overflow-scroll">
+     <table className="relative top-0 flex basis-[90%] flex-col overflow-auto">
       <thead className="sticky top-0 z-10 flex h-[40px] w-full bg-white">
        {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id} className="flex w-full">
