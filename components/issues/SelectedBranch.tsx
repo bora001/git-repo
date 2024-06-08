@@ -1,6 +1,7 @@
 'use client';
 
 import { SelectedRepoType } from '@/query/issues/issue-query.type';
+import { formatNumber } from '@/utils/formatNumber';
 import { ExternalLinkIcon, EyeOpenIcon, StarIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -44,7 +45,7 @@ const SelectedBranch = ({
     {status.map((item, index) => (
      <div className="flex items-center space-x-1" key={index}>
       {item.icon}
-      <p className="text-xs">{item.count}</p>
+      <p className="text-xs">{formatNumber(item.count)}</p>
      </div>
     ))}
    </div>
