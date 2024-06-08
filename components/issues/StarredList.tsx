@@ -3,6 +3,7 @@ import StarredLink from './ui/StarredLink';
 import { StarredRepoListType } from '@/query/issues/issue-query.type';
 import { useSearchParams } from 'next/navigation';
 import useSetURL from '@/hooks/useSetURL';
+import { FILTER_OPTIONS, FILTER_STATUS } from '../../app/issues/constants';
 export type IssueSelectedType = {
  name: string;
  login: string;
@@ -16,10 +17,14 @@ const StarredList = ({
 }) => {
  const searchParams = useSearchParams();
  const current = searchParams.get('name');
-
  const { setURL } = useSetURL();
  const setSelected = ({ login, name }: IssueSelectedType) => {
-  setURL({ login, name });
+  setURL({
+   login,
+   name,
+   status: FILTER_STATUS[0].title ?? '',
+   sort: FILTER_OPTIONS[0].value ?? '',
+  });
  };
  return (
   <div className="space-y-3 p-10">

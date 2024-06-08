@@ -12,17 +12,18 @@ import { RedirectType, redirect } from 'next/navigation';
 const Issues = async ({ searchParams }: { searchParams: { [key: string]: string } }) => {
  await checkReturn();
  const { name, login } = searchParams ?? {};
+
  const notSelected = !name || !login;
  const access = cookies().get('access')?.value as string;
  const auth = cookies().get('login')?.value as string;
  const starredRepoData = await getStarredRepoData({ access, login: auth }).then((res) => {
-  console.log(res);
   if (res.status === '401') {
    redirect('/login?callback=/issues', 'replace' as RedirectType);
   }
   return res;
  });
 
+ const { nodes, totalCount } = starredRepoData?.data?.user?.starredRepositories ?? {};
  const selectedRepoData = !notSelected
   ? await getSelectedRepoInfo({
      access,
@@ -30,7 +31,7 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
      owner: searchParams.login,
     })
   : { data: {} };
- const { nodes, totalCount } = starredRepoData?.data?.user?.starredRepositories ?? {};
+
  const {
   data: { repository },
  } = selectedRepoData;
@@ -39,9 +40,9 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
    <StarredList {...{ totalCount, nodes }} />
    <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10">
     {!notSelected && <SelectedBranch {...repository} />}
-    {!name && !login && <>nothing</>}
-    {name && login && <IssueFilter />}
-    {name && login && <IssueTable {...{ access }} />}
+    {notSelected && <>Please select branch on the left</>}
+    {!notSelected && <IssueFilter />}
+    {!notSelected && <IssueTable {...{ access }} />}
    </div>
   </div>
  );

@@ -17,6 +17,12 @@ export interface SelectedRepoType extends StarredRepoListType {
 export type SelectedRepoIssueListType = {
  repository: {
   issues: {
+   pageInfo: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string;
+    endCursor: string;
+   };
    nodes: {
     title: string;
     createdAt: string;

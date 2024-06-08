@@ -1,20 +1,15 @@
 'use client';
 
 import useSetURL from '@/hooks/useSetURL';
-import CustomSelect, { SelectItemType } from '../ui/CustomSelect';
+import CustomSelect from '../ui/CustomSelect';
 import { Button } from '../ui/button';
 import { useSearchParams } from 'next/navigation';
+import { FILTER_OPTIONS, FILTER_STATUS } from '../../app/issues/constants';
 
 const IssueFilter = () => {
  const { setURL } = useSetURL();
  const params = useSearchParams();
- const status = params.get('status') ?? '';
- const FILTER_STATUS = [{ title: 'All' }, { title: 'Open' }, { title: 'Closed' }];
- const FILTER_OPTIONS: SelectItemType[] = [
-  { option: 'Newest', value: 'CREATED_AT' },
-  { option: 'Most Commented', value: 'COMMENTS' },
-  { option: 'Recently Updated', value: 'UPDATED_AT' },
- ];
+ const [status, sort] = [params.get('status') ?? '', params.get('sort') ?? ''];
  //best match, reactions
  const onChangeSelect = (option: string) => {
   setURL({ sort: option });
@@ -34,7 +29,11 @@ const IssueFilter = () => {
     ))}
    </div>
    <div>
-    <CustomSelect onChange={onChangeSelect} placeholder={'Sort'} selectObj={FILTER_OPTIONS} />
+    <CustomSelect
+     onChange={onChangeSelect}
+     placeholder={(FILTER_OPTIONS.filter((item) => item.value === sort)[0]?.option as string) ?? ''}
+     selectObj={FILTER_OPTIONS}
+    />
    </div>
   </div>
  );
