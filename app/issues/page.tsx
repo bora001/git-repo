@@ -1,3 +1,4 @@
+'use server';
 import { checkReturn } from '@/actions/auth-check';
 import { getSelectedRepoInfo } from '@/actions/issues/get-selected-repo-info';
 import { getStarredRepoData } from '@/actions/issues/get-starred-repo';
@@ -6,15 +7,22 @@ import IssueTable from '@/components/issues/IssueTable';
 import SelectedBranch from '@/components/issues/SelectedBranch';
 import StarredList from '@/components/issues/StarredList';
 import { cookies } from 'next/headers';
+import { RedirectType, redirect } from 'next/navigation';
 
 const Issues = async ({ searchParams }: { searchParams: { [key: string]: string } }) => {
  await checkReturn();
  const { name, login } = searchParams ?? {};
  const notSelected = !name || !login;
-
  const access = cookies().get('access')?.value as string;
  const auth = cookies().get('login')?.value as string;
- const starredRepoData = await getStarredRepoData({ access, login: auth });
+ const starredRepoData = await getStarredRepoData({ access, login: auth }).then((res) => {
+  console.log(res);
+  if (res.status === '401') {
+   redirect('/login?callback=/issues', 'replace' as RedirectType);
+  }
+  return res;
+ });
+
  const selectedRepoData = !notSelected
   ? await getSelectedRepoInfo({
      access,
@@ -22,11 +30,10 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
      owner: searchParams.login,
     })
   : { data: {} };
- const { nodes, totalCount } = starredRepoData.data?.user?.starredRepositories ?? {};
+ const { nodes, totalCount } = starredRepoData?.data?.user?.starredRepositories ?? {};
  const {
   data: { repository },
  } = selectedRepoData;
-
  return (
   <div className="flex h-screen w-screen">
    <StarredList {...{ totalCount, nodes }} />

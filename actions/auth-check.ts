@@ -1,8 +1,7 @@
 'use server';
 
 import { isLogin } from '@/utils/useIsLogin';
-import { redirect } from 'next/navigation';
-
+import { RedirectType, redirect } from 'next/navigation';
 export async function checkReturn() {
- !isLogin && redirect('/login');
+ !isLogin && redirect('/login', 'replace' as RedirectType);
 }
