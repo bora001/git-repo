@@ -6,10 +6,14 @@ export type IconButtonType = {
  text?: string;
  icon?: ReactNode;
  className?: string;
+ reverse?: boolean;
 };
-const IconButton = ({ text, icon, type, className }: IconButtonType) => {
+const IconButton = ({ text, icon, type, className, reverse }: IconButtonType) => {
  return (
-  <Button className={`space-x-4 ${className}`} type={type}>
+  <Button
+   className={`flex space-x-4 ${className} ${reverse && 'flex-row-reverse space-x-reverse'}`}
+   type={type}
+  >
    {icon}
    <p>{text}</p>
   </Button>
