@@ -1,6 +1,6 @@
 'use server';
 
-import { handler } from '@/app/api/auth/[...nextauth]/route';
+import { signOut } from '@/auth/auth';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -9,7 +9,7 @@ export async function githubSignOut() {
   cookies().delete('refresh');
   cookies().delete('access');
   cookies().delete('login');
-  await handler.signOut();
+  await signOut();
  } catch (err) {
   console.log(err);
  }

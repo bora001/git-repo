@@ -1,8 +1,8 @@
-import { handler } from '../api/auth/[...nextauth]/route';
 import Image from 'next/image';
+import { auth } from '@/auth/auth';
 
 const index = async () => {
- const { user } = (await handler.auth()) ?? {};
+ const { user } = (await auth()) ?? {};
  console.log(user, 'session');
  return (
   <>

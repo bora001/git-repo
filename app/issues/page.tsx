@@ -16,8 +16,8 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
  const { name, login } = searchParams ?? {};
 
  const notSelected = !name || !login;
- const access = cookies().get('access')?.value as string;
- const auth = cookies().get('login')?.value as string;
+ const access = cookies().get('access')?.value ?? '';
+ const auth = cookies().get('login')?.value ?? '';
  const starredRepoData = await getStarredRepoData({ access, login: auth }).then((res) => {
   if (res.status === '401') {
    redirect('/login?callback=/issues', 'replace' as RedirectType);
@@ -39,7 +39,7 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
  } = selectedRepoData;
  return (
   <div>
-   {nodes.length ? (
+   {nodes?.length ? (
     <div className="flex h-screen w-screen">
      <StarredList {...{ totalCount, nodes }} />
      <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10">
