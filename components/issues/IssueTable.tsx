@@ -21,6 +21,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { formatNumber } from '@/utils/formatNumber';
+import { ENV_CONFIG } from '@/env-config';
 
 const PAGE_SIZE = 10; // page per pagination
 const REQUEST_PAGES = 50; // request pages to server
@@ -63,7 +64,7 @@ const IssueTable = ({ access }: { access: string }) => {
   enabled: !!access && isValidData,
   queryFn: () =>
    request<SelectedRepoIssueListType>(
-    process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL as string,
+    ENV_CONFIG.GRAPHQL_API as string,
     gql`
      ${SELECTED_REPO_ISSUE_LIST(requestParams)}
     `,

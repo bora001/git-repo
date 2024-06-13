@@ -1,7 +1,8 @@
 import { GET_USER_STARRED_REPOS } from '@/query/issues/issues-query';
+import { ENV_CONFIG } from '@/env-config';
 
 export const getStarredRepoData = ({ access, login }: { access: string; login: string }) =>
- fetch(process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL as string, {
+ fetch(ENV_CONFIG.GRAPHQL_API as string, {
   method: 'POST',
   headers: {
    'Content-Type': 'application/json',

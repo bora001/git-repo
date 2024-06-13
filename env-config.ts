@@ -1,0 +1,8 @@
+export const ENV_CONFIG = {
+ AUTH_SECRET: process.env.AUTH_SECRET,
+ BASE_API: process.env.NEXT_PUBLIC_API_URL,
+ GRAPHQL_API: process.env.NEXT_PUBLIC_GRAPHQL_GITHUB_API_URL,
+ AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+ AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+ BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+} as const;

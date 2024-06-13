@@ -1,4 +1,6 @@
 'use client';
+
+import { ENV_CONFIG } from '@/env-config';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { githubSignIn } from '@/actions/social-signIn';
 import IconButton from '../ui/IconButton';
@@ -9,7 +11,7 @@ const SignInBtn = ({ type = 'sm' }: { type?: SignInBtnType }) => {
  const params = useSearchParams();
 
  return (
-  <form action={() => githubSignIn(params.get('callback') ?? '/')}>
+  <form action={() => githubSignIn(params.get('callback') ?? ENV_CONFIG.BASE_URL)}>
    <IconButton
     type="submit"
     text={`Sign in ${type === 'md' ? 'with Github' : ''}`}
