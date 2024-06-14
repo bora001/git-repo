@@ -16,12 +16,13 @@ import {
  useReactTable,
 } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
-import { SymbolIcon } from '@radix-ui/react-icons';
+import { ChatBubbleIcon, SymbolIcon } from '@radix-ui/react-icons';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { formatNumber } from '@/utils/formatNumber';
 import { ENV_CONFIG } from '@/env-config';
+import { twMerge } from 'tailwind-merge';
 
 const PAGE_SIZE = 10; // page per pagination
 const REQUEST_PAGES = 50; // request pages to server
@@ -135,18 +136,32 @@ const IssueTable = ({ access }: { access: string }) => {
  };
 
  const getCellWidth = (id: string) => {
-  const isTitle = id.includes('title') && 'basis-[50%]';
-  const isNumber = id.includes('number') && 'basis-[10%]';
-  return isTitle || isNumber || 'basis-[20%]';
+  const isTitle = id.includes('title') && 'basis-[70%] sm:basis-[60%] max-sm:basis-[80%]';
+  const isNumber = id.includes('number') && 'basis-[10%] max-sm:basis-[20%]';
+  return isTitle || isNumber || 'basis-[10%] sm:basis-[15%]';
+ };
+
+ const cellStyling = (id: string) => {
+  // mobile + common Styling
+  let condition = '';
+  const hiddenOnMobile = ['createdAt', 'comments_totalCount'];
+  if (hiddenOnMobile.includes(id)) {
+   condition = 'max-sm:hidden';
+  }
+  return `px-5 py-2 text-sm ${condition}`;
  };
  return (
   <div
-   className={`flex flex-col ${isFetching || isLoading ? 'items-center justify-center' : ''} min-h-[220px] w-full flex-1 rounded-md bg-white`}
+   className={twMerge(
+    'min-h-[220px] w-full  rounded-md bg-white',
+    'flex flex-1 flex-col ',
+    (isFetching || isLoading) && 'items-center justify-center',
+   )}
   >
    {isFetching || isLoading ? (
     <SymbolIcon className="h-6 w-6 animate-spin text-blue-500" />
    ) : (
-    <div className="flex h-full w-full flex-1 flex-col  ">
+    <div className="flex h-full w-full flex-1 flex-col">
      <table className="relative top-0 flex basis-[90%] flex-col overflow-auto">
       <thead className="sticky top-0 z-10 flex h-[40px] w-full bg-white">
        {table.getHeaderGroups().map((headerGroup) => (
@@ -154,7 +169,7 @@ const IssueTable = ({ access }: { access: string }) => {
          {headerGroup.headers.map((header) => (
           <th
            key={header.id}
-           className={`${getCellWidth(header.id)}  bg-blue-100 px-5 py-2 text-sm `}
+           className={twMerge('bg-blue-100', cellStyling(header.id), getCellWidth(header.id))}
           >
            {header.isPlaceholder
             ? null
@@ -168,12 +183,28 @@ const IssueTable = ({ access }: { access: string }) => {
        {table.getRowModel().rows.map((row) => (
         <tr key={row.id} className="flex w-full items-center">
          {row.getVisibleCells().map((cell) => {
+          const isTitle = cell.column.id === 'title';
           return (
            <td
             key={cell.id}
-            className={`${getCellWidth(cell.id)}  px-5 py-2 text-center text-sm text-gray-800 `}
+            className={twMerge(
+             'text-center text-gray-800',
+             cellStyling(cell.column.id),
+             getCellWidth(cell.id),
+            )}
            >
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            <p>{flexRender(cell.column.columnDef.cell, cell.getContext())}</p>
+            {isTitle && (
+             <div className=" hidden justify-between max-sm:flex ">
+              <div className="flex space-x-1 text-left text-gray-400">
+               <ChatBubbleIcon />
+               <p>{cell.row.original.comments.totalCount}</p>
+              </div>
+              <p className="text-left text-gray-400">
+               {dayjs(cell.row.original.createdAt).format('MMM-YYYY')}
+              </p>
+             </div>
+            )}
            </td>
           );
          })}

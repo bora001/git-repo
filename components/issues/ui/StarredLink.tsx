@@ -2,6 +2,7 @@
 import { StarredRepoListType } from '@/query/issues/issue-query.type';
 import Image from 'next/image';
 import { IssueSelectedType } from '../StarredList';
+import { twMerge } from 'tailwind-merge';
 
 interface StarredLinkType extends StarredRepoListType {
  onClick: (selected: IssueSelectedType) => void;
@@ -15,7 +16,11 @@ const StarredLink = ({
 }: StarredLinkType) => {
  return (
   <div
-   className={`flex cursor-pointer items-center justify-between rounded-sm border border-transparent p-2 ${isSelected ? 'bg-blue-100' : ''}`}
+   className={twMerge(
+    'flex items-center justify-between p-2',
+    'cursor-pointer rounded-sm border border-transparent',
+    isSelected && 'bg-blue-100',
+   )}
    onClick={() => onClick({ name, login })}
   >
    <div className="flex  items-center space-x-3">

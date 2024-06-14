@@ -5,6 +5,7 @@ import { formatNumber } from '@/utils/formatNumber';
 import { ExternalLinkIcon, EyeOpenIcon, StarIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
 
 const SelectedBranch = ({
  name,
@@ -26,7 +27,9 @@ const SelectedBranch = ({
  ];
 
  return (
-  <div className="round-container flex justify-between">
+  <div
+   className={twMerge('round-container flex justify-between', 'max-sm:flex-col max-sm:space-y-3')}
+  >
    {/* left */}
    <div>
     <div className="flex items-center space-x-2">

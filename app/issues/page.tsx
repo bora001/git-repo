@@ -42,7 +42,7 @@ const Issues = async ({ searchParams }: { searchParams: { [key: string]: string 
    {nodes?.length ? (
     <div className="flex h-screen w-screen">
      <StarredList {...{ totalCount, nodes }} />
-     <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10">
+     <div className="flex w-full flex-col space-y-3 bg-blue-50 p-10 max-sm:pl-[50px] sm:pl-[60px] md:pl-[40px]">
       {notSelected && <NotSelected />}
       {!notSelected && (
        <>

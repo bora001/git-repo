@@ -24,7 +24,7 @@ const CustomSelect = ({
 }) => {
  return (
   <Select onValueChange={onChange}>
-   <SelectTrigger className="w-[180px]">
+   <SelectTrigger className="w-[180px] max-sm:w-full">
     <SelectValue placeholder={placeholder} />
    </SelectTrigger>
    <SelectContent>
