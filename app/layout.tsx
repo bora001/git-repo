@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/header/Header';
 import { ReactQueryClientProvider } from '@/components/provider/query-provider';
-import { isLogin } from '@/utils/useIsLogin';
 import { cookies } from 'next/headers';
+import { auth } from '@/auth/auth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,13 +18,12 @@ export default async function RootLayout({
 }: Readonly<{
  children: React.ReactNode;
 }>) {
- const isLoginStatus = await isLogin();
+ const data = await auth();
  const user = cookies().get('login')?.value;
-
  return (
   <html lang="en">
    <body className={inter.className}>
-    <Header isLogin={isLoginStatus} user={user} />
+    <Header isLogin={!!data} user={user} />
     <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
    </body>
   </html>
