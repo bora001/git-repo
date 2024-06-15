@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/header/Header';
 import { ReactQueryClientProvider } from '@/components/provider/query-provider';
 import { isLogin } from '@/utils/useIsLogin';
+import { cookies } from 'next/headers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,11 +19,12 @@ export default async function RootLayout({
  children: React.ReactNode;
 }>) {
  const isLoginStatus = await isLogin();
+ const user = cookies().get('login')?.value;
 
  return (
   <html lang="en">
    <body className={inter.className}>
-    <Header isLogin={isLoginStatus} />
+    <Header isLogin={isLoginStatus} user={user} />
     <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
    </body>
   </html>

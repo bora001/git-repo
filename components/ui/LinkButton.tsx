@@ -1,13 +1,16 @@
 import Link from 'next/link';
 import IconButton, { IconButtonType } from './IconButton';
-type LinkButtonProps = IconButtonType & {
- href: string;
-};
-const LinkButton = ({ href, ...rest }: LinkButtonProps) => {
+import { AnchorHTMLAttributes } from 'react';
+type LinkButtonProps = IconButtonType & AnchorHTMLAttributes<HTMLAnchorElement>;
+const LinkButton = ({ href, target, ...rest }: LinkButtonProps) => {
  return (
-  <Link href={href}>
-   <IconButton {...{ ...rest }} />
-  </Link>
+  <>
+   {href && (
+    <Link href={href} target={target ?? '_self'}>
+     <IconButton {...{ ...rest }} />
+    </Link>
+   )}
+  </>
  );
 };
 export default LinkButton;

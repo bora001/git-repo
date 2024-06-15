@@ -1,10 +1,10 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import SignInBtn from '../login/SignInBtn';
 import SignOutBtn from '../login/SignOutBtn';
-import MypageBtn from '../mypage/MypageBtn';
 import Link from 'next/link';
+import LinkButton from '../ui/LinkButton';
 
-const Header = ({ isLogin = false }: { isLogin?: boolean }) => {
+const Header = ({ isLogin = false, user }: { isLogin?: boolean; user?: string }) => {
  return (
   <div className="flex h-header w-screen  items-center justify-between bg-blue-100 px-5 py-3">
    <Link href="/">
@@ -16,7 +16,7 @@ const Header = ({ isLogin = false }: { isLogin?: boolean }) => {
      <SignInBtn />
     ) : (
      <>
-      <MypageBtn />
+      {user && <LinkButton href={`https://github.com/${user}`} text="Mypage" target="_blank" />}
       <SignOutBtn />
      </>
     )}
