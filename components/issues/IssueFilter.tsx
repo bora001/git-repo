@@ -3,14 +3,15 @@
 import useSetURL from '@/hooks/useSetURL';
 import CustomSelect from '../ui/CustomSelect';
 import { Button } from '../ui/button';
-import { useSearchParams } from 'next/navigation';
 import { FILTER_OPTIONS, FILTER_STATUS } from '../../app/issues/constants';
 import { twMerge } from 'tailwind-merge';
+import useGetSearchParams from '@/hooks/useGetSearchParams';
 
 const IssueFilter = () => {
  const { setURL } = useSetURL();
- const params = useSearchParams();
- const [status, sort] = [params.get('status') ?? '', params.get('sort') ?? ''];
+ const { getSearchParams } = useGetSearchParams();
+ const [status, sort] = getSearchParams(['status', 'sort']);
+
  const onChangeSelect = (option: string) => {
   setURL({ sort: option });
  };

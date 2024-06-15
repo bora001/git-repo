@@ -15,7 +15,6 @@ import {
  getPaginationRowModel,
  useReactTable,
 } from '@tanstack/react-table';
-import { useSearchParams } from 'next/navigation';
 import { ChatBubbleIcon, SymbolIcon } from '@radix-ui/react-icons';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -24,6 +23,7 @@ import { formatNumber } from '@/utils/formatNumber';
 import { ENV_CONFIG } from '@/env-config';
 import { twMerge } from 'tailwind-merge';
 import { ISSUE_TABLE_CONSTANTS } from './constants/issue.constants';
+import useGetSearchParams from '@/hooks/useGetSearchParams';
 
 type CursorType = {
  before: null | string;
@@ -41,19 +41,14 @@ const IssueTable = ({ access }: { access: string }) => {
   pageSize: PAGE_SIZE, //default page size
  });
 
- const params = useSearchParams();
- const [name, owner, states, sort] = [
-  params.get('name') ?? '',
-  params.get('login') ?? '',
-  params.get('status')?.toUpperCase() ?? '',
-  params.get('sort') ?? '',
- ];
+ const { getSearchParams } = useGetSearchParams();
+ const [name, owner, states, sort] = getSearchParams(['name', 'login', 'status', 'sort']);
 
  const requestParams = {
   name,
   owner,
   first: REQUEST_PAGES,
-  states,
+  states: states.toUpperCase(),
   sort,
   before: cursor.before,
   after: cursor.after,
