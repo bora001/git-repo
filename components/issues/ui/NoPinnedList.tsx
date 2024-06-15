@@ -1,5 +1,5 @@
 import { ResetIcon } from '@radix-ui/react-icons';
-import LinkButton from '../ui/LinkButton';
+import LinkButton from '../../ui/LinkButton';
 import { twMerge } from 'tailwind-merge';
 
 const NoPinnedList = () => {

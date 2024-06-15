@@ -11,7 +11,6 @@ const IssueFilter = () => {
  const { setURL } = useSetURL();
  const params = useSearchParams();
  const [status, sort] = [params.get('status') ?? '', params.get('sort') ?? ''];
- //best match, reactions
  const onChangeSelect = (option: string) => {
   setURL({ sort: option });
  };

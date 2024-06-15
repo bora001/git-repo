@@ -3,7 +3,6 @@ import { auth } from '@/auth/auth';
 
 const index = async () => {
  const { user } = (await auth()) ?? {};
- console.log(user, 'session');
  return (
   <>
    {user && (

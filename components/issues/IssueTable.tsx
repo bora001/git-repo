@@ -23,9 +23,8 @@ import Link from 'next/link';
 import { formatNumber } from '@/utils/formatNumber';
 import { ENV_CONFIG } from '@/env-config';
 import { twMerge } from 'tailwind-merge';
+import { ISSUE_TABLE_CONSTANTS } from './constants/issue.constants';
 
-const PAGE_SIZE = 10; // page per pagination
-const REQUEST_PAGES = 50; // request pages to server
 type CursorType = {
  before: null | string;
  after: null | string;
@@ -36,7 +35,7 @@ const IssueTable = ({ access }: { access: string }) => {
   before: null, //before cursor
   after: null, //after cursor
  });
-
+ const { PAGE_SIZE, REQUEST_PAGES } = ISSUE_TABLE_CONSTANTS;
  const [pagination, setPagination] = useState({
   pageIndex: 0, //initial page index
   pageSize: PAGE_SIZE, //default page size
